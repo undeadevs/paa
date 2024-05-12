@@ -5,6 +5,7 @@ import time
 
 class BellmanFord():
 
+    # Constructor to initiliaze bellman-ford
     def __init__(self, nodes: List[str], adj_mat: List[int], src: str):
         self.nodes = nodes
         self.adj_mat = adj_mat
@@ -13,17 +14,23 @@ class BellmanFord():
         src_index = nodes.index(src)
         self.dist[src_index] = [0, src_index]
 
+    # Executes bellman-ford
     def execute(self) -> List[List[Any]]:
         history = []
+        # Append initial state (0th iteration) to history
         history.append(self.dist.copy())
+        # Iterate V-1 times
         for _ in range(0,len(self.nodes)-1):
+            # Iterate through all edges
             for i, weight in enumerate(self.adj_mat):
                 u = math.floor(i / len(self.nodes))
                 v = i % len(self.nodes)
                 if weight==0:
                     continue
+                # Relax edges
                 if self.dist[u][0]+weight < self.dist[v][0]:
                     self.dist[v] = [self.dist[u][0]+weight, u]
+            # Append current iteration to history
             history.append(self.dist.copy())
         return history
 
