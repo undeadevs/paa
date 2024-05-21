@@ -32,6 +32,17 @@ class BellmanFord():
                     self.dist[v] = [self.dist[u][0]+weight, u]
             # Append current iteration to history
             history.append(self.dist.copy())
+
+        # Check negative cycles by iterating through all edges
+        for i, weight in enumerate(self.adj_mat):
+            u = math.floor(i / len(self.nodes))
+            v = i % len(self.nodes)
+            if weight==0:
+                continue
+            if self.dist[u][0]+weight < self.dist[v][0]:
+                self.dist[v] = [float("-inf"), u]
+        history.append(self.dist.copy())
+
         return history
 
     # Builds path from source to destination
